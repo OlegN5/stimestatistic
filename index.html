@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundTimeOne</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <!-- <link href="main.css" rel="stylesheet"></link> -->
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
+</head>
+<body>
+    <h2 ad ='title' class="title" styles=color: green>SoundTimeOne</h2>
+    <div id="app" class="conteiner-fluid">
+        <div id='name' class="bg-light name">
+            <p>    </p>
+            <select id='sname' class="form-select" aria-label="Default select example">
+                <option selected>Кто сегодня звукорежиссер?</option>
+                <option value="1">Олег</option>
+                <option value="2">Марк</option>
+                <option value="3">Саша</option>
+                <option value="4">Костя</option>
+                <option value="5">Сергей</option>
+            </select>
+            
+        </div>
+    </div>
+    <input id ="date" type="date" name="calendar">
+    <input id="radio" type="radio" name="choose" value ='9'>day
+    <input id="radio" type="radio" name="choose" value ='21'>night
+    
+    
+    <button id='statButton' type="button" class="btn btn-primary btn-lg">Обновить статистику</button>
+
+    <div id="app2" class="conteiner-fluid">
+        <div id='stat' class="bg-light name">
+        
+        <p id='statistic' class='h6'></p>  
+        <p id='sa'></p>
+        <p id='ma'></p>
+        <p id='se'></p>
+        <p id='ko'></p>
+        <p id='ol'></p>
+        
+        </div>
+    </div>
+    <p id='version'>v0.01</p>
+    <script src = "index.js"></script>
+</body>
+</html>
