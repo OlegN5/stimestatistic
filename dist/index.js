@@ -13,137 +13,107 @@ const firebaseConfig = {
   var db = firebase.firestore()
 
 
-  
 document.getElementById('sname').addEventListener('change', function() {
     console.log("з/р поменялся")
     document.getElementById('statButton').disabled = false
-    document.getElementById('start').disabled = false
-    document.getElementById('postfactum').disabled = true
-    localStorage.myName = readMyName()
-    if (document.getElementById('sname').value === 'Кто сегодня звукорежиссер?') {
-        console.log("з/р поменялся на: кто с з/р?")
-        document.getElementById('start').disabled = true
-        document.getElementById('postfactum').disabled = true
+   
     
-        inputFormsDisabled (true)
-    
-        document.getElementById('stop').disabled = true
-        document.getElementById('statButton').disabled = true
-    }
 })
 
 function getTimeSmeny (dataTimeSmeny) {
-            let dataNow = new Date(dataTimeSmeny)
-            let smenaStart = dataNow
+            console.log('dataTimeSmeny2', dataTimeSmeny)
+            console.log('new Date(dataTimeSmeny)', new Date(dataTimeSmeny))
+            const dataNow = new Date(dataTimeSmeny)
+
+            console.log("dataNow", dataNow)
             
+            let smenaStart = dataNow
 
         console.log("dataNow.getHour", dataNow.getHours())
 
         if (dataNow.getHours()>= 9 && dataNow.getHours() < 21) {
             //Дневная смена
-        
+
             smenaStart.setHours(9);
-            smenaStart.setMinutes(0)   
+            smenaStart.setMinutes(0) 
+            return smenaStart 
         } else if (dataNow.getHours() >= 21) {
             //Ночная смена
-        
+
             smenaStart.setHours(21);
             smenaStart.setMinutes(0)
+            return smenaStart 
         } else if (dataNow.getHours() < 9) { //<9
             //Ночная смена следующая дата( после 00:00) 
-            
-            
+
             smenaStart.setDate(dataNow.getDate()-1)
             smenaStart.setHours(21);
             smenaStart.setMinutes(0)
+            return smenaStart 
         }
 
 }
 
+function sumStat (my) {
+    tStart=my.timeStart
+    tStop=my.timeStop
+    duration = tStop.seconds - tStart.seconds
+    console.log("my",my.name)
+    if (my.name==="Саша") {
+        durSa += duration
+    } else if (my.name==="Костя") {
+        durKo += duration
+    } else if (my.name==="Марк") {
+        durMa += duration
+    } else if (my.name==="Сергей") {
+        durSe += duration
+    } else if (my.name==="Олег") {
+        durOl += duration
+    }
+    console.log("my",my.name)
+    console.log("tStart", tStart.seconds)
+    }
 
 document.querySelector('#statButton').addEventListener('click', function() { 
-            document.getElementById('statButton').disabled = true
-            durOl = 0 
-            durSe = 0 
-            durKo = 0 
-            durSa = 0 
-            durMa = 0 
-        
-        dataTimeSmeny = 
+        //document.getElementById('statButton').disabled = true
+        durOl = 0 
+        durSe = 0 
+        durKo = 0 
+        durSa = 0 
+        durMa = 0 
+    
+        dataSmeny = document.getElementById('date').value
+        timeSmeny = document.getElementById('daynight').value
+        dataTimeSmeny = `${dataSmeny}T${timeSmeny}`
+        console.log("dataTimeSmeny", dataTimeSmeny)
 
-        getTimeSmeny (dataTimeSmeny)
-            
-
-        db.collection(selectCollectionInBase()).where("timeStart", ">", smenaStart)
+        db.collection(selectCollectionInBase()).where("timeStart", ">", getTimeSmeny(dataTimeSmeny))
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     //debugger
-                    
                     console.log(doc.id, " => ", doc.data());
                     console.log(doc.data())
-                    my=doc.data()
-                    tStart=my.timeStart
-                    tStop=my.timeStop
-                    duration = tStop.seconds - tStart.seconds
-                    console.log("my",my.name)
-                    if (my.name==="Саша") {
-                        durSa += duration
-                    } else if (my.name==="Костя") {
-                        durKo += duration
-                    } else if (my.name==="Марк") {
-                        durMa += duration
-                    } else if (my.name==="Сергей") {
-                        durSe += duration
-                    } else if (my.name==="Олег") {
-                        durOl += duration
-                    }
-                    console.log("my",my.name)
-                    console.log("tStart", tStart.seconds)
-                    
-
-
-                    //my.name
-                
+                    sumStat (doc.data())
                 });
-            
-        let ddate = new Date(0);
-                ddate.setSeconds(durSa);
-                let durSaST = ddate.toISOString().substr(11, 8);
-        ddate = new Date(0);
-                ddate.setSeconds(durMa); 
-                let durMaST = ddate.toISOString().substr(11, 8);
-        ddate = new Date(0);
-                ddate.setSeconds(durKo); 
-                let durKoST = ddate.toISOString().substr(11, 8);
-        ddate = new Date(0);
-                ddate.setSeconds(durOl);
-                let durOlST = ddate.toISOString().substr(11, 8);
-        ddate = new Date(0);
-                ddate.setSeconds(durSe);
-                let durSeST = ddate.toISOString().substr(11, 8);
-            
-        
-        document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
-        document.getElementById('sa').textContent = `Саша за смену отработал: ${durSaST}`
-        document.getElementById('ma').textContent = `Марк за смену отработал: ${durMaST}`
-        document.getElementById('ko').textContent = `Костя за смену отработал: ${durKoST}`
-        document.getElementById('ol').textContent = `Олег за смену отработал: ${durOlST}`
-        document.getElementById('se').textContent = `Серега за смену отработал: ${durSeST}`
-
-
-        
-            
-            
+                durSaST = `${Math.floor(durSa/3600)}: ${Math.floor((durSa%3600)/60)}`
+                durKoST = `${Math.floor(durKo/3600)}: ${Math.floor((durKo%3600)/60)}`
+                durMaST = `${Math.floor(durMa/3600)}: ${Math.floor((durMa%3600)/60)}`
+                durSeST = `${Math.floor(durSe/3600)}: ${Math.floor((durSe%3600)/60)}`
+                durOlST = `${Math.floor(durOl/3600)}: ${Math.floor((durOl%3600)/60)}`
+                document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
+                document.getElementById('sa').textContent = `Саша за смену отработал: ${durSaST}`
+                document.getElementById('ma').textContent = `Марк за смену отработал: ${durMaST}`
+                document.getElementById('ko').textContent = `Костя за смену отработал: ${durKoST}`
+                document.getElementById('ol').textContent = `Олег за смену отработал: ${durOlST}`
+                document.getElementById('se').textContent = `Серега за смену отработал: ${durSeST}`
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
             });
-
         console.log('statistic')
         document.getElementById('statButton').disabled = false
-
 })
 
 document.querySelector('#statButton').addEventListener('dblclick', function() {
