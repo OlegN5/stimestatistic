@@ -69,6 +69,8 @@ function sumStat (my) {
         durSe += duration
     } else if (my.name==="Олег") {
         durOl += duration
+    } else if (my.name==="Инна") {
+        durIn += duration
     }
     console.log("my",my.name)
     console.log("tStart", tStart.seconds)
@@ -81,7 +83,8 @@ document.querySelector('#statButton').addEventListener('click', function() {
         durKo = 0 
         durSa = 0 
         durMa = 0 
-    
+        durIn = 0 
+
         dataSmeny = document.getElementById('date').value
         timeSmeny = document.getElementById('daynight').value
         dataTimeSmeny = `${dataSmeny}T${timeSmeny}`
@@ -114,12 +117,14 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 durMaST = `${Math.floor(durMa/3600)}: ${Math.floor((durMa%3600)/60)}`
                 durSeST = `${Math.floor(durSe/3600)}: ${Math.floor((durSe%3600)/60)}`
                 durOlST = `${Math.floor(durOl/3600)}: ${Math.floor((durOl%3600)/60)}`
+                durInST = `${Math.floor(durIn/3600)}: ${Math.floor((durIn%3600)/60)}`
                 document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
                 document.getElementById('sa').textContent = `Линкевич отработал: ${durSaST}`
                 document.getElementById('ma').textContent = `Наумов отработал: ${durMaST}`
                 document.getElementById('ko').textContent = `Ясинский отработал: ${durKoST}`
                 document.getElementById('ol').textContent = `Новиков отработал: ${durOlST}`
                 document.getElementById('se').textContent = `Измайлов отработал: ${durSeST}`
+                document.getElementById('in').textContent = `Непомнящая отработала: ${durInST}`
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
@@ -172,6 +177,8 @@ function readMyName() {
         return 'Костя'
     } else if (sname == 5) {
         return 'Сергей'
+    } else if (sname == 6) {
+        return 'Инна'
     } else {
         return 'Кто сегодня звукорежиссер?'
     }
@@ -188,6 +195,8 @@ function MyNameToValue(myName) {
         return 4
     } else if (myName === 'Сергей') {
         return 5
+    } else if (myName === 'Инна') {
+        return 6
     } else if (myName === 'Кто сегодня звукорежиссер?') {
         return 0
     }
