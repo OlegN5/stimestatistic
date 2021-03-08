@@ -86,8 +86,20 @@ document.querySelector('#statButton').addEventListener('click', function() {
         timeSmeny = document.getElementById('daynight').value
         dataTimeSmeny = `${dataSmeny}T${timeSmeny}`
         console.log("dataTimeSmeny", dataTimeSmeny)
+        let period = document.getElementById('period').value
+        dataTimeSmenyDate = getTimeSmeny(dataTimeSmeny)
+        endZapros = dataTimeSmenyDate
+        endZapros.setHours(endZapros.getHours() + (Number(period)))
+        console.log("endZapros", endZapros)
+
+
+        // var d = new Date(2011, 1, 28);
+        // d.setDate(d.getDate() + 2);
+
+
 
         db.collection(selectCollectionInBase()).where("timeStart", ">", getTimeSmeny(dataTimeSmeny))
+        .where("timeStart", "<", endZapros)
             .get()
             .then((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
@@ -103,11 +115,11 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 durSeST = `${Math.floor(durSe/3600)}: ${Math.floor((durSe%3600)/60)}`
                 durOlST = `${Math.floor(durOl/3600)}: ${Math.floor((durOl%3600)/60)}`
                 document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
-                document.getElementById('sa').textContent = `Саша за смену отработал: ${durSaST}`
-                document.getElementById('ma').textContent = `Марк за смену отработал: ${durMaST}`
-                document.getElementById('ko').textContent = `Костя за смену отработал: ${durKoST}`
-                document.getElementById('ol').textContent = `Олег за смену отработал: ${durOlST}`
-                document.getElementById('se').textContent = `Серега за смену отработал: ${durSeST}`
+                document.getElementById('sa').textContent = `Линкевич отработал: ${durSaST}`
+                document.getElementById('ma').textContent = `Наумов отработал: ${durMaST}`
+                document.getElementById('ko').textContent = `Ясинский отработал: ${durKoST}`
+                document.getElementById('ol').textContent = `Новиков отработал: ${durOlST}`
+                document.getElementById('se').textContent = `Измайлов отработал: ${durSeST}`
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
