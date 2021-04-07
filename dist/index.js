@@ -54,6 +54,15 @@ function getTimeSmeny (dataTimeSmeny) {
 
 }
 
+function tableCreate (my){
+    tStart=my.timeStart
+    tStop=my.timeStop
+    duration = tStop.seconds - tStart.seconds
+    
+
+}
+
+
 function sumStat (my) {
     tStart=my.timeStart
     tStop=my.timeStop
@@ -111,13 +120,32 @@ document.querySelector('#statButton').addEventListener('click', function() {
                     console.log(doc.id, " => ", doc.data());
                     console.log(doc.data())
                     sumStat (doc.data())
+                    tableCreate (doc.data())
                 });
-                durSaST = `${Math.floor(durSa/3600)}: ${Math.floor((durSa%3600)/60)}`
-                durKoST = `${Math.floor(durKo/3600)}: ${Math.floor((durKo%3600)/60)}`
-                durMaST = `${Math.floor(durMa/3600)}: ${Math.floor((durMa%3600)/60)}`
-                durSeST = `${Math.floor(durSe/3600)}: ${Math.floor((durSe%3600)/60)}`
-                durOlST = `${Math.floor(durOl/3600)}: ${Math.floor((durOl%3600)/60)}`
-                durInST = `${Math.floor(durIn/3600)}: ${Math.floor((durIn%3600)/60)}`
+                if (Math.floor((durSa%3600)/60) < 10) {
+                    minSa = `0${Math.floor((durSa%3600)/60)}`
+                }
+                if (Math.floor((durKo%3600)/60) < 10) {
+                    minKo = `0${Math.floor((durKo%3600)/60)}`
+                }
+                if (Math.floor((durMa%3600)/60) < 10) {
+                    minMa = `0${Math.floor((durMa%3600)/60)}`
+                }
+                if (Math.floor((durSe%3600)/60) < 10) {
+                    minSe = `0${Math.floor((durSe%3600)/60)}`
+                }
+                if (Math.floor((durOl%3600)/60) < 10) {
+                    minOl = `0${Math.floor((durOl%3600)/60)}`
+                }
+                if (Math.floor((durIn%3600)/60) < 10) {
+                    minIn = `0${Math.floor((durIn%3600)/60)}`
+                }
+                durSaST = `${Math.floor(durSa/3600)}: ${minSa}`
+                durKoST = `${Math.floor(durKo/3600)}: ${minKo}`
+                durMaST = `${Math.floor(durMa/3600)}: ${minMa}`
+                durSeST = `${Math.floor(durSe/3600)}: ${minSe}`
+                durOlST = `${Math.floor(durOl/3600)}: ${minOl}`
+                durInST = `${Math.floor(durIn/3600)}: ${minIn}`
                 document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
                 document.getElementById('sa').textContent = `Линкевич отработал: ${durSaST}`
                 document.getElementById('ma').textContent = `Наумов отработал: ${durMaST}`
@@ -163,44 +191,4 @@ function selectCollectionInBase() {
     return collection
 }
 
-
-function readMyName() {
-    sname = document.getElementById('sname').value
-
-    if (sname == 1) {
-        return 'Олег'
-    } else if (sname == 2) {
-        return 'Марк'
-    } else if (sname == 3) {
-        return 'Саша'
-    } else if (sname == 4) {
-        return 'Костя'
-    } else if (sname == 5) {
-        return 'Сергей'
-    } else if (sname == 6) {
-        return 'Инна'
-    } else {
-        return 'Кто сегодня звукорежиссер?'
-    }
-}
-
-function MyNameToValue(myName) {
-    if (myName === 'Олег') {
-        return 1
-    } else if (myName === 'Марк') {
-        return 2
-    } else if (myName === 'Саша') {
-        return 3
-    } else if (myName === 'Костя') {
-        return 4
-    } else if (myName === 'Сергей') {
-        return 5
-    } else if (myName === 'Инна') {
-        return 6
-    } else if (myName === 'Кто сегодня звукорежиссер?') {
-        return 0
-    }
-
-     
-}
 
