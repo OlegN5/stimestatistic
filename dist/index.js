@@ -74,12 +74,14 @@ function sumStat (my) {
         durKo += duration
     } else if (my.name==="Марк") {
         durMa += duration
-    } else if (my.name==="Сергей") {
+    } else if (my.name==="Сергей" || my.name==="Сергей Измайлов") {
         durSe += duration
     } else if (my.name==="Олег") {
         durOl += duration
     } else if (my.name==="Инна") {
         durIn += duration
+    } else if (my.name==="Сергей Неретин") {
+        durSn += duration
     }
     console.log("my",my.name)
     console.log("tStart", tStart.seconds)
@@ -93,6 +95,14 @@ document.querySelector('#statButton').addEventListener('click', function() {
         durSa = 0 
         durMa = 0 
         durIn = 0 
+        durSn = 0 
+        minSa = 0
+        minKo = 0
+        minMa = 0
+        minSe = 0
+        minOl = 0
+        minIn = 0
+        minSn = 0
 
         dataSmeny = document.getElementById('date').value
         timeSmeny = document.getElementById('daynight').value
@@ -122,6 +132,14 @@ document.querySelector('#statButton').addEventListener('click', function() {
                     sumStat (doc.data())
                     tableCreate (doc.data())
                 });
+                    minSa = Math.floor((durSa%3600)/60)
+                    minKo = Math.floor((durKo%3600)/60)
+                    minMa = Math.floor((durMa%3600)/60)
+                    minSe = Math.floor((durSe%3600)/60)
+                    minOl = Math.floor((durOl%3600)/60)
+                    minIn = Math.floor((durIn%3600)/60)
+                    minSn = Math.floor((durSn%3600)/60)
+
                 if (Math.floor((durSa%3600)/60) < 10) {
                     minSa = `0${Math.floor((durSa%3600)/60)}`
                 }
@@ -140,12 +158,18 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 if (Math.floor((durIn%3600)/60) < 10) {
                     minIn = `0${Math.floor((durIn%3600)/60)}`
                 }
+                if (Math.floor((durSn%3600)/60) < 10) {
+                    minSn = `0${Math.floor((durSn%3600)/60)}`
+                }
+
                 durSaST = `${Math.floor(durSa/3600)}: ${minSa}`
                 durKoST = `${Math.floor(durKo/3600)}: ${minKo}`
                 durMaST = `${Math.floor(durMa/3600)}: ${minMa}`
                 durSeST = `${Math.floor(durSe/3600)}: ${minSe}`
                 durOlST = `${Math.floor(durOl/3600)}: ${minOl}`
                 durInST = `${Math.floor(durIn/3600)}: ${minIn}`
+                durSnST = `${Math.floor(durSn/3600)}: ${minSn}`
+
                 document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
                 document.getElementById('sa').textContent = `Линкевич отработал: ${durSaST}`
                 document.getElementById('ma').textContent = `Наумов отработал: ${durMaST}`
@@ -153,6 +177,7 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 document.getElementById('ol').textContent = `Новиков отработал: ${durOlST}`
                 document.getElementById('se').textContent = `Измайлов отработал: ${durSeST}`
                 document.getElementById('in').textContent = `Непомнящая отработала: ${durInST}`
+                document.getElementById('sn').textContent = `Неретин отработал: ${durSnST}`
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
