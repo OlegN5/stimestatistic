@@ -13,6 +13,21 @@ const firebaseConfig = {
   var db = firebase.firestore()
 
 
+var chatid = "-1001476218810";
+var tokenTel = "5097081300:AAGaq_J8zZiImhfZIR1U9XjnJjvH_vKYiTI";
+var text = "Всем привет! <b>Я ваш бот</b> информатор! <b>stimestatistic</b>";
+
+otpravka(tokenTel,text,chatid);
+
+function otpravka(tokenTel,text,chatid){
+  var z=$.ajax({  
+  type: "POST",  
+  url: "https://api.telegram.org/bot"+tokenTel+"/sendMessage?chat_id="+chatid,
+  data: "parse_mode=HTML&text="+encodeURIComponent(text), 
+  }); 
+ };
+
+
 document.getElementById('sname').addEventListener('change', function() {
     console.log("з/р поменялся")
     document.getElementById('statButton').disabled = false
@@ -114,6 +129,8 @@ document.querySelector('#statButton').addEventListener('click', function() {
         endZapros.setHours(endZapros.getHours() + (Number(period)))
         console.log("endZapros", endZapros)
 
+        
+
 
         // var d = new Date(2011, 1, 28);
         // d.setDate(d.getDate() + 2);
@@ -178,6 +195,9 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 document.getElementById('se').textContent = `Измайлов отработал: ${durSeST}`
                 document.getElementById('in').textContent = `Непомнящая отработала: ${durInST}`
                 document.getElementById('sn').textContent = `Неретин отработал: ${durSnST}`
+
+                text = `${dataTimeSmeny} \n ${period}\n Л: ${durSaST} \n C: ${durMaST} \n Я: ${durKoST} \n Н: ${durOlST} \n И: ${durSeST} \n Не: ${durInST}`
+                otpravka(tokenTel,text,chatid);
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
