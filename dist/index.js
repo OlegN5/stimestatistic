@@ -189,7 +189,7 @@ document.querySelector('#statButton').addEventListener('click', function() {
 
                 document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
                 document.getElementById('sa').textContent = `Линкевич отработал: ${durSaST}`
-                document.getElementById('ma').textContent = `Наумов отработал: ${durMaST}`
+                document.getElementById('ma').textContent = `Смирнов отработал: ${durMaST}`
                 document.getElementById('ko').textContent = `Ясинский отработал: ${durKoST}`
                 document.getElementById('ol').textContent = `Новиков отработал: ${durOlST}`
                 document.getElementById('se').textContent = `Измайлов отработал: ${durSeST}`
