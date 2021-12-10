@@ -11,6 +11,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-firestore.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="lib/liteChart.min.js"></script>
 </head>
 <body>
     <h2 ad ='title' class="title" styles=color: green>sTimeOneStatistic</h2>
@@ -52,6 +53,8 @@
     </div>
     <h1 hidden>количество отработанных смен выводить!!!</h1>
     <button id='statButton' type="button" class="btn btn-primary btn-lg">Обновить статистику</button>
+    <p></p>
+    <button id='statMonth' type="button" class="btn btn-primary btn-lg">График по месяцам</button>
 
     <div id="app2" class="conteiner-fluid">
         <div id='stat' class="bg-light name">
@@ -67,7 +70,10 @@
         <p>...</p>
         </div>
     </div>
-    <p id='version'>v0.03</p>
+    <div id="your-id" style="height: 400px;"></div>
+
+
+    <p id='version'>v0.04</p>
     <script src = "index.js"></script>
 </body>
 </html>

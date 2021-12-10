@@ -28,6 +28,7 @@ function otpravka(tokenTel,text,chatid){
  };
 
 
+
 document.getElementById('sname').addEventListener('change', function() {
     console.log("з/р поменялся")
     document.getElementById('statButton').disabled = false
@@ -102,15 +103,61 @@ function sumStat (my) {
     console.log("tStart", tStart.seconds)
     }
 
+
+
+
+document.querySelector('#statMonth').addEventListener('click', function() { 
+    // Create liteChart.js Object
+	settings = {};
+	let d = new liteChart("chart", settings);
+
+	// Set labels
+	d.setLabels(["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+
+	// Set legends and values
+	d.addLegend({"name": "Инна", "stroke": "#C39", "fill": "#fff", "values": [100, 200, 450, 400, 500, 300, 700, 800, 601, 705, 604]});
+	d.addLegend({"name": "Марк", "stroke": "#31f", "fill": "#fff", "values": [200, 150, 240, 180, 150, 240, 230, 300, 200, 150, 270]});
+    d.addLegend({"name": "Александр", "stroke": "#CD39", "fill": "#fff", "values": [, 200, 450, 400, 500, 300, 700, 800, 601, 705, 604]});
+	d.addLegend({"name": "Константин", "stroke": "#3Cf", "fill": "#fff", "values": [240, 180, 150, 240, 230, 300, 200, 150, 270]});
+    d.addLegend({"name": "Олег", "stroke": "#5e7", "fill": "#fff", "values": [180, 150, 240, 230, 300, 200, 150, 270]});
+
+	// Inject chart into DOM object
+	let div = document.getElementById("your-id");
+	d.inject(div);
+
+	// Draw
+	d.draw();
+
+
+
+
+})
 document.querySelector('#statButton').addEventListener('click', function() { 
+    dataSmeny = document.getElementById('date').value
+    timeSmeny = document.getElementById('daynight').value
+    dataTimeSmeny = `${dataSmeny}T${timeSmeny}`
+    console.log("dataTimeSmeny", dataTimeSmeny)
+    let period = document.getElementById('period').value
+    dataTimeSmenyDate = getTimeSmeny(dataTimeSmeny)
+    endZapros = dataTimeSmenyDate
+
+    
+    dd = vyvod (dataSmeny, timeSmeny, dataTimeSmeny, period, dataTimeSmenyDate, endZapros)
+
+    console.log('!!!!!!!!!!', dd)
+
+})
+
+
+function vyvod (dataSmeny, timeSmeny, dataTimeSmeny, period, dataTimeSmenyDate, endZapros) {
         //document.getElementById('statButton').disabled = true
-        durOl = 0 
-        durSe = 0 
-        durKo = 0 
-        durSa = 0 
-        durMa = 0 
-        durIn = 0 
-        durSn = 0 
+        durOl = 0
+        durSe = 0
+        durKo = 0
+        durSa = 0
+        durMa = 0
+        durIn = 0
+        durSn = 0
         minSa = 0
         minKo = 0
         minMa = 0
@@ -118,14 +165,15 @@ document.querySelector('#statButton').addEventListener('click', function() {
         minOl = 0
         minIn = 0
         minSn = 0
+        durSaST=''
+        durMaST=''
+        durKoST=''
+        durOlST=''
+        durSeST=''
+        durInST=''
+        durSnST=''
 
-        dataSmeny = document.getElementById('date').value
-        timeSmeny = document.getElementById('daynight').value
-        dataTimeSmeny = `${dataSmeny}T${timeSmeny}`
-        console.log("dataTimeSmeny", dataTimeSmeny)
-        let period = document.getElementById('period').value
-        dataTimeSmenyDate = getTimeSmeny(dataTimeSmeny)
-        endZapros = dataTimeSmenyDate
+        
         endZapros.setHours(endZapros.getHours() + (Number(period)))
         console.log("endZapros", endZapros)
 
@@ -187,6 +235,11 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 durInST = `${Math.floor(durIn/3600)}: ${minIn}`
                 durSnST = `${Math.floor(durSn/3600)}: ${minSn}`
 
+                
+
+                text = `${dataTimeSmeny} \n ${period}\n Л: ${durSaST} \n C: ${durMaST} \n Я: ${durKoST} \n Н: ${durOlST} \n И: ${durSeST} \n Не: ${durInST}`
+                otpravka(tokenTel,text,chatid);
+
                 document.getElementById('statistic').textContent = `ОБНОВЛЕНО: ${new Date()}`
                 document.getElementById('sa').textContent = `Линкевич отработал: ${durSaST}`
                 document.getElementById('ma').textContent = `Смирнов отработал: ${durMaST}`
@@ -195,16 +248,15 @@ document.querySelector('#statButton').addEventListener('click', function() {
                 document.getElementById('se').textContent = `Измайлов отработал: ${durSeST}`
                 document.getElementById('in').textContent = `Непомнящая отработала: ${durInST}`
                 document.getElementById('sn').textContent = `Неретин отработал: ${durSnST}`
-
-                text = `${dataTimeSmeny} \n ${period}\n Л: ${durSaST} \n C: ${durMaST} \n Я: ${durKoST} \n Н: ${durOlST} \n И: ${durSeST} \n Не: ${durInST}`
-                otpravka(tokenTel,text,chatid);
+                
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
             });
         console.log('statistic')
         document.getElementById('statButton').disabled = false
-})
+        return [durSaST,durMaST,durKoST,durOlST,durSeST,durInST,durSnST,durSa, durKo, durMa, durSe, durOl, durIn, durSn]
+}
 
 document.querySelector('#statButton').addEventListener('dblclick', function() {
     alert('один раз ...')
@@ -227,7 +279,7 @@ document.querySelector('#statButton').addEventListener('dblclick', function() {
 //     });
 
 function selectCollectionInBase() {
-    document.URL == 'http://localhost:5000/' ?
+    document.URL == '127.0.0.1:8000/' ?
     collection = 'test':
     collection = 'users'
 
