@@ -104,29 +104,117 @@ function sumStat (my) {
     }
 
 
+function myDaysInMonth(dataSmeny) {
+        var today = dataSmeny
+        var month = today.getMonth();
+        return daysInMonth(month + 1, today.getFullYear())
 
+    }
+    
+function daysInMonth(month,year) {
+      return new Date(year, month, 0).getDate();
+    }
 
 document.querySelector('#statMonth').addEventListener('click', function() { 
     // Create liteChart.js Object
+    
 	settings = {};
 	let d = new liteChart("chart", settings);
 
-	// Set labels
-	d.setLabels(["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+    
+    dataSmeny = new Date('02.01.21')
+    timeSmeny = '00:00:00'
+    dataTimeSmeny = `${dataSmeny}`
+    let period = myDaysInMonth(dataSmeny)*24
+    dataTimeSmenyDate = dataSmeny
+    endZapros = dataTimeSmenyDate
+    endZapros.setHours(endZapros.getHours() + (Number(period)))
+
+    
+        durOl = 0
+        durSe = 0
+        durKo = 0
+        durSa = 0
+        durMa = 0
+        durIn = 0
+        durSn = 0
+        minSa = 0
+        minKo = 0
+        minMa = 0
+        minSe = 0
+        minOl = 0
+        minIn = 0
+        minSn = 0
+
+    db.collection(selectCollectionInBase())
+    .where("timeStart", ">", getTimeSmeny(dataTimeSmeny))
+    .where("timeStart", "<", endZapros)
+    .get()
+    .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            console.log(doc.id, " => ", doc.data());
+            console.log(doc.data())
+            sumStat (doc.data())
+            tableCreate (doc.data())     
+        });
+    minSa = Math.floor((durSa%3600)/60)
+    minKo = Math.floor((durKo%3600)/60)
+    minMa = Math.floor((durMa%3600)/60)
+    minSe = Math.floor((durSe%3600)/60)
+    minOl = Math.floor((durOl%3600)/60)
+    minIn = Math.floor((durIn%3600)/60)
+    minSn = Math.floor((durSn%3600)/60)
+                    // Set labels
+	
+                    
+
+
+
+
+    
+    })
+    .catch((error) => {
+        console.log("Error getting documents: ", error);
+    });
+
+
+
+
+
+    d.setLabels(["Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
 
 	// Set legends and values
-	d.addLegend({"name": "Инна", "stroke": "#C39", "fill": "#fff", "values": [100, 200, 450, 400, 500, 300, 700, 800, 601, 705, 604]});
-	d.addLegend({"name": "Марк", "stroke": "#31f", "fill": "#fff", "values": [200, 150, 240, 180, 150, 240, 230, 300, 200, 150, 270]});
-    d.addLegend({"name": "Александр", "stroke": "#CD39", "fill": "#fff", "values": [, 200, 450, 400, 500, 300, 700, 800, 601, 705, 604]});
-	d.addLegend({"name": "Константин", "stroke": "#3Cf", "fill": "#fff", "values": [240, 180, 150, 240, 230, 300, 200, 150, 270]});
-    d.addLegend({"name": "Олег", "stroke": "#5e7", "fill": "#fff", "values": [180, 150, 240, 230, 300, 200, 150, 270]});
+	d.addLegend({"name": "Инна", "stroke": "#C39", "fill": "#fff", "values": [minIn, 200, 450, 400, 500, 300, 700, 800, 601, 705, 604]});
+	d.addLegend({"name": "Марк", "stroke": "#31f", "fill": "#fff", "values": [minMa, 150, 240, 180, 150, 240, 230, 300, 200, 150, 270]});
+    d.addLegend({"name": "Александр", "stroke": "#CD39", "fill": "#fff", "values": [minSa, 200, 450, 400, 500, 300, 700, 800, 601, 705, 604]});
+	d.addLegend({"name": "Константин", "stroke": "#3Cf", "fill": "#fff", "values": [minKo, 180, 150, 240, 230, 300, 200, 150, 270]});
+    d.addLegend({"name": "Олег", "stroke": "#5e7", "fill": "#fff", "values": [minOl, 150, 240, 230, 300, 200, 150, 270]});
+    d.addLegend({"name": "Сергей", "stroke": "#5f10", "fill": "#fff", "values": [minSe, 150, 240, 230, 300, 200, 150, 270]});
+    
 
+    console.log('d',d)
 	// Inject chart into DOM object
 	let div = document.getElementById("your-id");
 	d.inject(div);
 
 	// Draw
 	d.draw();
+
+
+
+
+
+
+    // dd = vyvod (dataSmeny, timeSmeny, dataTimeSmeny, period, dataTimeSmenyDate, endZapros)
+
+    // console.log('!!!!!!!!!!', dd)
+
+
+
+
+
+
+	
 
 
 
@@ -144,7 +232,9 @@ document.querySelector('#statButton').addEventListener('click', function() {
     
     dd = vyvod (dataSmeny, timeSmeny, dataTimeSmeny, period, dataTimeSmenyDate, endZapros)
 
-    console.log('!!!!!!!!!!', dd)
+    console.log('!!!!!!!!!!', dd[1])
+
+
 
 })
 
@@ -226,7 +316,7 @@ function vyvod (dataSmeny, timeSmeny, dataTimeSmeny, period, dataTimeSmenyDate, 
                 if (Math.floor((durSn%3600)/60) < 10) {
                     minSn = `0${Math.floor((durSn%3600)/60)}`
                 }
-
+                console.log('minOl', minOl)
                 durSaST = `${Math.floor(durSa/3600)}: ${minSa}`
                 durKoST = `${Math.floor(durKo/3600)}: ${minKo}`
                 durMaST = `${Math.floor(durMa/3600)}: ${minMa}`
@@ -249,13 +339,15 @@ function vyvod (dataSmeny, timeSmeny, dataTimeSmeny, period, dataTimeSmenyDate, 
                 document.getElementById('in').textContent = `Непомнящая отработала: ${durInST}`
                 document.getElementById('sn').textContent = `Неретин отработал: ${durSnST}`
                 
+                
             })
             .catch((error) => {
                 console.log("Error getting documents: ", error);
             });
         console.log('statistic')
         document.getElementById('statButton').disabled = false
-        return [durSaST,durMaST,durKoST,durOlST,durSeST,durInST,durSnST,durSa, durKo, durMa, durSe, durOl, durIn, durSn]
+        // return [durSaST,durMaST,durKoST,durOlST,durSeST,durInST,durSnST,durSa, durKo, durMa, durSe, durOl, durIn, durSn]
+        return [minSa, minKo, minMa, minSe, minOl, minIn]
 }
 
 document.querySelector('#statButton').addEventListener('dblclick', function() {
